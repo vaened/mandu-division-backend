@@ -14,4 +14,5 @@ Route::post('create', Division\CreateDivisionController::class)->name('api.divis
 Route::get('/', Division\SearchDivisionsController::class)->name('api.divisions');
 Route::get('{id}', Division\FindDivisionController::class)->name('api.divisions.find');
 Route::delete('{id}', Division\DeleteDivisionController::class)->name('api.divisions.delete');
+Route::put('{id}', Division\UpdateDivisionController::class)->name('api.divisions.update');
 

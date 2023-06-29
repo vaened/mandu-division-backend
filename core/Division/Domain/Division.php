@@ -53,4 +53,17 @@ final class Division extends Model
     {
         return $this->belongsToMany(self::class, 'subdivisions', 'parent_division_id', 'child_division_id');
     }
+
+    public function values(
+        string  $name,
+        string  $ambassadorName,
+        ?string $parent_division_id
+    ): void
+    {
+        $this->fill([
+            'name' => $name,
+            'ambassador_name' => $ambassadorName,
+            'parent_division_id' => $parent_division_id,
+        ]);
+    }
 }
