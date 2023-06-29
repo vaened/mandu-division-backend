@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Mandu\Core\Division\Domain;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mandu\Components\Eloquent\Model;
 
 /**
@@ -18,7 +19,7 @@ use Mandu\Components\Eloquent\Model;
  */
 final class Division extends Model
 {
-    private const COLLABORATOR_ALLOWED_RANGE = [0, 1000];
+    public const COLLABORATOR_ALLOWED_RANGE = [0, 1000];
 
     protected $fillable = [
         'name',
@@ -46,5 +47,10 @@ final class Division extends Model
     private static function generateRandomCollaboratorsMembers(): int
     {
         return rand(...self::COLLABORATOR_ALLOWED_RANGE);
+    }
+
+    public function subdivisions(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'subdivisions', 'parent_division_id', 'child_division_id');
     }
 }
