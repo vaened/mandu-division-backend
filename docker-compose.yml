@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  mandu_mysql:
+    container_name: mandu_division-mysql
+    image: mysql:8.0.20
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+        - ./storage/database:/var/lib/mysql
+        - ./etc/infrastructure/database:/docker-entrypoint-initdb.d
+    ports:
+        - 4406:${DB_PORT}
+    environment:
+        MYSQL_DATABASE: ${DB_DATABASE}
+        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    networks:
+        - mandu-division_network
+    command: '--default-authentication-plugin=mysql_native_password'
+
+  mandu_backend_php:
+    container_name: mandu_division_backend-php
+    user: "${UID}:${GID}"
+    restart: unless-stopped
+    env_file: .env
+    build:
+      context: .
+      dockerfile: Backend.Dockerfile
+    command: 'php artisan serve --host=0.0.0.0'
+    environment:
+        DB_HOST: mandu_mysql
+    ports:
+      - "8040:8000"
+    volumes:
+      - .:/app:delegated
+    depends_on:
+      - mandu_mysql
+    networks:
+        - mandu-division_network
+networks:
+    mandu-division_network:
+        driver: bridge
