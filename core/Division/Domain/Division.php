@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Mandu\Core\Division\Domain;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mandu\Components\Eloquent\Model;
 
@@ -16,6 +17,8 @@ use Mandu\Components\Eloquent\Model;
  * @property string ambassador_name
  * @property int parent_division_id
  * @property int collaborators
+ *
+ * @property Collection subdivisions
  */
 final class Division extends Model
 {
