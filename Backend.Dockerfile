@@ -28,7 +28,6 @@ RUN docker-php-ext-enable \
 
 COPY etc/infrastructure/php/mandu.ini /usr/local/etc/conf.d
 
-# allow non-root users have home
 RUN mkdir -p /opt/home
 RUN chmod 777 /opt/home
 ENV HOME /opt/home

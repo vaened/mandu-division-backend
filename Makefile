@@ -8,7 +8,7 @@ deps: composer-install
 
 .PHONY: app
 app:
-	docker-compose exec mandu_backend_php bash
+	docker-compose exec -u root mandu_backend_php bash
 
 art:
 	docker-compose exec mandu_backend_php php artisan $(filter-out $@,$(MAKECMDGOALS))
@@ -42,9 +42,12 @@ reload: composer-env-file
 	@docker-compose exec php-fpm kill -USR2 1
 	@docker-compose exec nginx nginx -s reload
 
-.PHONY: test
 test: composer-env-file
+ifdef f
+	docker exec mandu_division_backend-php php artisan test --filter="$(f)"
+else
 	docker exec mandu_division_backend-php php artisan test
+endif
 
 .PHONY: start
 start: CMD=up --build -d
