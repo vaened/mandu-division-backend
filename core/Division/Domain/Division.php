@@ -19,6 +19,7 @@ use Mandu\Components\Eloquent\Model;
  * @property int collaborators
  *
  * @property Collection subdivisions
+ * @property self division
  */
 final class Division extends Model
 {
@@ -50,6 +51,11 @@ final class Division extends Model
     private static function generateRandomCollaboratorsMembers(): int
     {
         return rand(...self::COLLABORATOR_ALLOWED_RANGE);
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'parent_division_id', 'id');
     }
 
     public function subdivisions(): BelongsToMany
