@@ -14,6 +14,6 @@ final class DivisionSearcher
 {
     public function search(): Collection
     {
-        return Division::query()->get();
+        return Division::query()->with(['parent', 'subdivisions'])->get();
     }
 }
