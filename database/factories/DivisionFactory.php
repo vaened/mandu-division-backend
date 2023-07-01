@@ -15,7 +15,8 @@ class DivisionFactory extends Factory
         return [
             'name' => fake()->unique()->name,
             'ambassador_name' => fake()->name,
-            'collaborators' => fake()->numberBetween(...Division::COLLABORATOR_ALLOWED_RANGE),
+            'collaborators' => fake()->numberBetween(...Division::ALLOWED_RANGE),
+            'nivel' => fake()->numberBetween(...Division::ALLOWED_RANGE),
         ];
     }
 }

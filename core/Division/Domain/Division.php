@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace Mandu\Core\Division\Domain;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mandu\Components\Eloquent\Model;
 
@@ -17,13 +18,14 @@ use Mandu\Components\Eloquent\Model;
  * @property string ambassador_name
  * @property int parent_division_id
  * @property int collaborators
+ * @property int nivel
  *
  * @property Collection subdivisions
  * @property self division
  */
 final class Division extends Model
 {
-    public const COLLABORATOR_ALLOWED_RANGE = [0, 1000];
+    public const ALLOWED_RANGE = [0, 10];
 
     protected $fillable = [
         'name',
@@ -44,13 +46,19 @@ final class Division extends Model
         ]);
 
         $model->setAttribute('collaborators', self::generateRandomCollaboratorsMembers());
+        $model->setAttribute('nivel', self::generateRandomNivel());
 
         return $model;
     }
 
     private static function generateRandomCollaboratorsMembers(): int
     {
-        return rand(...self::COLLABORATOR_ALLOWED_RANGE);
+        return rand(...self::ALLOWED_RANGE);
+    }
+
+    private static function generateRandomNivel(): int
+    {
+        return rand(...self::ALLOWED_RANGE);
     }
 
     public function parent(): BelongsTo

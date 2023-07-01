@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->string('ambassador_name', 80);
             $table->unsignedBigInteger('parent_division_id')->nullable();
             $table->unsignedInteger('collaborators');
+            $table->unsignedInteger('nivel');
 
             $table->foreign('parent_division_id')->references('id')->on('divisions');
         });
