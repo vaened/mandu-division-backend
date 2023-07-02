@@ -185,6 +185,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Mandu\Components\Laroute\LarouteServiceProvider::class,
 
         /*
          * Application Service Providers...
