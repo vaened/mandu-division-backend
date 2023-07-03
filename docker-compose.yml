@@ -18,15 +18,23 @@ services:
         - mandu-division_network
     command: '--default-authentication-plugin=mysql_native_password'
 
+  composer:
+      image: composer:2.5
+      command: ["composer", "install", "--ignore-platform-reqs", "--no-ansi"]
+      volumes:
+          - ./mandu-division-backend:/app:delegated
+
   mandu_backend_php:
     container_name: mandu_division_backend-php
-    user: "${UID}:${GID}"
     restart: unless-stopped
     env_file: .env
     build:
       context: .
       dockerfile: Backend.Dockerfile
-    command: 'chmod -R 775 /app/storage && php artisan serve --host=0.0.0.0'
+    command:  >
+        sh -c "chmod -R 775 /app/storage &&
+              php artisan migrate --seed &&
+              php artisan serve --host=0.0.0.0"
     environment:
         - "DB_HOST=mandu_mysql"
     ports:
@@ -35,8 +43,11 @@ services:
       - .:/app:delegated
     depends_on:
       - mandu_mysql
+      - composer
     networks:
         - mandu-division_network
+
+
 networks:
     mandu-division_network:
         driver: bridge
